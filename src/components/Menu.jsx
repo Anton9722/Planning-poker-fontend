@@ -1,14 +1,10 @@
-// import React from 'react';
+
 import { useState, useEffect } from 'react';
-import HomePage from './HomePage';
-import Projects from './Projects';
 
 function Menu(props) {
 
-	const [page,setPage] = useState("");
-
 	useEffect(() => {
-		let pageUrl = page;
+		let pageUrl = props.page;
 
 		if(!pageUrl) {
 			const queryParameters = new URLSearchParams(window.location.search);
@@ -16,7 +12,7 @@ function Menu(props) {
 
 			if (getUrl) {
 				pageUrl = getUrl;
-				setPage(getUrl)
+				props.setPage(getUrl)
 			} else {
 				pageUrl = "start"
 			}
@@ -28,24 +24,14 @@ function Menu(props) {
 			"?page=" + pageUrl
 		)
 
-	}, [page])
+	}, [props.page])
 
 	return (
 		<>
 		<div>
-			<h1>Planning Poker</h1>
-			<button onClick={() => setPage("login")}>Login</button>
-			<button onClick={() => setPage("homepage")}>Homepage</button>
-			<button onClick={() => setPage("projects")}>Mina Project</button>
+			<button onClick={() => props.setPage("login")}>Logga ut</button>
+			<button onClick={() => props.setPage("home")}>Homepage</button>
 		</div>
-
-		{
-			{
-				// "login": <LoginComponent/>,
-				"homepage": <HomePage/>,
-				"projects": <Projects/>,
-			} [page]
-		}
 
 		</>
 	);
