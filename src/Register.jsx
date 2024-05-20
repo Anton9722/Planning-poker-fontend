@@ -12,7 +12,7 @@ function Register() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (input.password == input.passwordConfirm) {
-            fetch("", {
+            fetch("http://localhost:8080/user/create-user", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -22,8 +22,14 @@ function Register() {
                     password: input.password,
                 }),
             })
-                .then((res) => res.json())
-                .then(() => {});
+                .then((res) => {
+                    console.log(res.status);
+                    if(res.status === 409) {
+                        alert("Användarnamnet är upptaget")
+                    } else {
+                        alert("Ny användare skapad")
+                    }
+                })
         } else {
             alert("Lösenorden stämmer inte överens. Försök igen!");
         }
