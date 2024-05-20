@@ -63,13 +63,13 @@ function Home(props) {
 		})
 			.then(res => res.text())
 			.then(data => {
-				// if (data === "Unauthorized: User authentication failed") {
-				// 	console.log("Unauthorized: User authentication failed");
-				// 	props.setPage("login");
-				// } else {
+				if (data === "Unauthorized: User authentication failed") {
+					console.log("Unauthorized: User authentication failed");
+					props.setPage("login");
+				} else {
 					data = JSON.parse(data);
 					setNewProjectName(document.getElementById("newProjectInputField").value);
-				// }
+				}
 			})
 	}
 
