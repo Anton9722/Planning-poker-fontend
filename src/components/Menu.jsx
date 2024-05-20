@@ -26,10 +26,15 @@ function Menu(props) {
 
 	}, [props.page])
 
+	const logout = () => {
+		localStorage.removeItem("id");
+		localStorage.removeItem("sessionID");
+		props.setPage("login")
+	}
 	return (
 		<>
 		<div>
-			<button onClick={() => props.setPage("login")}>Logga ut</button>
+			<button onClick={() => logout()}>Logga ut</button>
 			<button onClick={() => props.setPage("home")}>Homepage</button>
 		</div>
 
