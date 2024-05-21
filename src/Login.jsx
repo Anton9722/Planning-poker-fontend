@@ -35,13 +35,17 @@ function Login({setPage}) {
         })
     };
 
+    const handleClick = () => {
+        setPage("register")
+    }
+
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Användarnamn</label>
-            <input placeholder="Ange användarnamn..." value={input.username} name="username" onChange={handleChange} minLength={5} maxLength={64} required></input>
-            <label>Lösenord</label>
-            <input placeholder="Ange lösenord..." value={input.password} name="password" onChange={handleChange} type="password" minLength={5} maxLength={64} required></input>
-            <button type="submit">Logga in</button>
+        <form onSubmit={handleSubmit} class="login-and-reg-form">
+            <label class="login-and-reg-form-label">Logga In</label>
+            <input placeholder="Användarnamn..." value={input.username} name="username" onChange={handleChange} minLength={5} maxLength={64} class="login-and-reg-input" required></input>
+            <input placeholder="Lösenord..." value={input.password} name="password" onChange={handleChange} type="password" minLength={5} maxLength={64} class="login-and-reg-input" required></input>
+            <button type="submit" class="login-and-red-btn">Logga in</button>
+            <p>Har du inget konto? <a onClick={handleClick} class="link-between-log-and-reg">Skapa nytt konto här</a></p>
         </form>
     );
 }

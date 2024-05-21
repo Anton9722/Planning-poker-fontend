@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Register() {
+function Register({setPage}) {
     const [input, setInput] = useState({
         username: "",
         password: "",
@@ -23,26 +23,30 @@ function Register() {
                 }),
             })
                 .then((res) => {
-                    console.log(res.status);
                     if(res.status === 409) {
                         alert("Användarnamnet är upptaget")
                     } else {
                         alert("Ny användare skapad")
+                        setPage("login")
                     }
                 })
         } else {
             alert("Lösenorden stämmer inte överens. Försök igen!");
         }
     };
+
+    const handleClick = () => {
+        setPage("login")
+    }
+
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Användarnamn</label>
-            <input placeholder="Ange användarnamn..." value={input.username} name="username" onChange={handleChange} minLength={5} maxLength={64} required></input>
-            <label>Lösenord</label>
-            <input placeholder="Ange lösenord..." value={input.password} name="password" onChange={handleChange} minLength={5} maxLength={64} required></input>
-            <label>Bekräfta lösenord</label>
-            <input placeholder="Bekräfta lösenord..." value={input.passwordConfirm} name="passwordConfirm" onChange={handleChange} minLength={5} maxLength={64} required></input>
-            <button type="submit">Bli medlem</button>
+        <form onSubmit={handleSubmit} class="login-and-reg-form">
+            <label class="login-and-reg-form-label">Skapa Konto</label>
+            <input placeholder="Ange användarnamn..." value={input.username} name="username" onChange={handleChange} minLength={5} maxLength={64} class="login-and-reg-input" required></input>
+            <input placeholder="Ange lösenord..." value={input.password} name="password" onChange={handleChange} minLength={5} maxLength={64} class="login-and-reg-input" required></input>
+            <input placeholder="Bekräfta lösenord..." value={input.passwordConfirm} name="passwordConfirm" onChange={handleChange} minLength={5} maxLength={64} class="login-and-reg-input" required></input>
+            <button type="submit" class="login-and-red-btn">Bli medlem</button>
+            <p>Har du redan ett konto? <a onClick={handleClick} class="link-between-log-and-reg">Logga in här</a></p>
         </form>
     );
 }
