@@ -1,0 +1,54 @@
+body {
+    background-color: #222831;
+}
+
+.login-and-reg-form{
+    background-color: #222831;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+
+}
+
+.login-and-reg-form-label {
+    color: #EEEEEE;
+    font-size: 45px;
+    margin-top: 10px;
+    
+}
+
+.login-and-reg-input {
+    padding: 6px 12px;
+    background: #393E46;
+    border: 1px solid rgb(60, 63, 68);
+    border-radius: 4px;
+    font-size: 20px;
+    color: white;
+    height: 46px;
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.login-and-red-btn{
+    margin-top: 35px;
+    margin-left: 50px;
+    margin-right: 50px;
+    background-color: #14FFEC;
+}
+
+.login-and-red-btn:hover {
+    background-color: #00949b;
+}
+
+.link-between-log-and-reg {
+    color: #14FFEC;
+    text-decoration: underline;
+}
+
+.link-between-log-and-reg:hover {
+    cursor: pointer;
+    color: #00949b;
+}
