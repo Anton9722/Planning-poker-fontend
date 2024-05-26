@@ -52,3 +52,37 @@ body {
     cursor: pointer;
     color: #00949b;
 }
+
+.show-username {
+    width: 45px;
+    height: 45px;
+    background-color: green;
+    margin-left: 20px;
+
+}
+
+.issueDiv {
+    background-color: #222831;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    width: 700px;
+    height: 300px;
+    margin-bottom: 10px;
+}
+
+.issueDiv::first-line {
+    font-size:xx-large;
+}
+
+.box-container{
+    display: flex;
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.usernameAssigned{
+    font-size: x-large;
+}
