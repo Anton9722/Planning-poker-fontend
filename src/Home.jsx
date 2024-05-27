@@ -29,8 +29,9 @@ function Home(props) {
 						document.getElementById("cardsDiv").innerHTML = "";
 						for (let i = 0; i < data.length; i++) {
 							const projectDiv = document.createElement("div");
+							projectDiv.classList.add("project-div")
 							projectDiv.style.borderStyle = "solid";
-							projectDiv.style.borderWidth = "2px";
+							projectDiv.style.borderWidth = "1px";
 							const projecth4 = document.createElement("h4");
 							projectDiv.appendChild(projecth4);
 							projecth4.innerHTML = data[i].projectname;
@@ -78,8 +79,10 @@ function Home(props) {
 		<div>
 			<Menu setPage={props.setPage} page={props.page} />
 			<h1>HomePage</h1>
-			<input type="text" placeholder='Nytt projekt' id="newProjectInputField" />
-			<button onClick={() => { createNewProject() }}>Skapa nytt projekt</button>
+			<div id="create-project-container">
+				<input type="text" placeholder='Nytt projekt' id="newProjectInputField" />
+				<button onClick={() => { createNewProject() }}>Skapa nytt projekt</button>
+			</div>
 			<div id="cardsDiv"></div>
 		</div>
 	);
