@@ -6,7 +6,7 @@ function Home(props) {
 	const [newProjectName, setNewProjectName] = useState("");
 
 	useEffect(() => {
-		fetch("http://localhost:8080/user/get-projectList", { //KANNSKE DEPLOYA MAIN FÖR DEV MILJÖ OCH KOPPLA DATABAS DIT? ÄNDRA SEDAN LOCALHOST
+		fetch("http://localhost:8080/user/get-projectList", { 
 			method: "GET",
 			headers: {
 				"id": localStorage.getItem("id"),
@@ -22,6 +22,7 @@ function Home(props) {
 					data = JSON.parse(data);
 					if (data.length == 0) {
 						let h3 = document.createElement("h3");
+						document.getElementById("cardsDiv").innerHTML = "";
 						h3.textContent = "Inga projekt";
 						document.getElementById("cardsDiv").appendChild(h3)
 					} else {
@@ -32,9 +33,9 @@ function Home(props) {
 							projectDiv.style.borderWidth = "2px";
 							const projecth4 = document.createElement("h4");
 							projectDiv.appendChild(projecth4);
-							projecth4.innerHTML = data[i].projectName;
+							projecth4.innerHTML = data[i].projectname;
 							projectDiv.addEventListener("click", () => {
-								props.setProject(data[i].projectID);
+								props.setProject(data[i].projectId);
 								props.setPage("project");
 							})
 							document.getElementById("cardsDiv").appendChild(projectDiv);
@@ -50,10 +51,10 @@ function Home(props) {
 		console.log(document.getElementById("newProjectInputField").value);
 
 
-		fetch("http://localhost:8080/project/create", { //KANNSKE DEPLOYA MAIN FÖR DEV MILJÖ OCH KOPPLA DATABAS DIT? ÄNDRA SEDAN LOCALHOST
+		fetch("http://localhost:8080/project/create", { 
 			method: "POST",
 			headers: {
-				"id": localStorage.getItem("id"),
+				"userId": localStorage.getItem("id"),
 				"sessionID": localStorage.getItem("sessionID"),
 				"Content-Type": "application/json"
 			},
@@ -75,8 +76,8 @@ function Home(props) {
 
 	return (
 		<div>
-			<h1>HomePage</h1>
 			<Menu setPage={props.setPage} page={props.page} />
+			<h1>HomePage</h1>
 			<input type="text" placeholder='Nytt projekt' id="newProjectInputField" />
 			<button onClick={() => { createNewProject() }}>Skapa nytt projekt</button>
 			<div id="cardsDiv"></div>

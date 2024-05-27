@@ -24,8 +24,8 @@ function App() {
                 {
                     "login": <Login setPage={setPage} />,
                     "register": <Register setPage={setPage} />,
-                    "home": < Home setPage={setPage} page={page} setProject={setProject}/>,
-                    "project": <Project setPage={setPage} project={project}/>,
+                    "home": < Home setPage={setPage} page={page} setProject={setProject} project={project}/>,
+                    "project": <Project setPage={setPage} page={page} project={project}/>,
                 }[page]
             }
         </div>
