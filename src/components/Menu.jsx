@@ -33,7 +33,7 @@ function Menu(props) {
 	}
 	return (
 		<>
-		<div>
+		<div id="menu">
 			<button onClick={() => logout()}>Logga ut</button>
 			<button onClick={() => props.setPage("home")}>Homepage</button>
 		</div>

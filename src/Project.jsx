@@ -28,8 +28,12 @@ function Project(props) {
 					setProjectData(data);
 					document.getElementById("membersDiv").innerHTML = "";
 					const obj = {};
+					if(data.creatorId != localStorage.getItem("id")) {
+                        document.getElementById("deleteProjectButton").disabled = true;
+                    }
 					for (let i = 0; i < data.memberList.length; i++) {
 						const h5 = document.createElement("h5");
+						h5.classList.add("members-names")
 						h5.innerHTML = data.memberList[i].username;
 						document.getElementById("membersDiv").appendChild(h5);
 						//skapar map av användare för att skapa issue.estimatedtimes
@@ -116,14 +120,12 @@ function Project(props) {
 			.then(data => {
 				//!!!!!!!!!1felhantering
 				loadPage();
-				console.log(listOfUsers);
 			})
 	}
 
 
 	//------------------------------METOD FÖR ATT HÄMTA OCH RITA UT ISSUES--------------------------------------
 	const fetchData = () => {
-		console.log("kör");
 		fetch("http://localhost:8080/project/" + props.project + "/issues", {
 			method:"GET",
 			headers: {
@@ -133,7 +135,7 @@ function Project(props) {
 		})
 		.then(res => {
 			if(res.status == 404) {
-				alert("No issues found")
+				
 			}
 			if(res.status == 200) {
 				return res.json()
@@ -172,20 +174,29 @@ function Project(props) {
 
 							
 							if(key == localStorage.getItem("id")){
-								let usersOwnCube = document.createElement("div")
-								usersOwnCube.style.backgroundColor = "red"
+
+								let inputContainer = document.createElement("div")
+								inputContainer.classList.add("input-container")
 								
 								let timeEstimateInput = document.createElement("input")
+								timeEstimateInput.id = "time-estimate-input"
+								timeEstimateInput.placeholder = "Timmar"
 								timeEstimateInput.type = "number"
 								timeEstimateInput.min = "0"
 	
 								let timeEstimateBtn = document.createElement("button")
+								timeEstimateBtn.id = "time-estimate-btn"
 								timeEstimateBtn.innerHTML = "Spara tidsestimering"
-								
-								usersOwnCube.appendChild(timeEstimateBtn)
-								usersOwnCube.appendChild(timeEstimateInput)
-								boxContainer.appendChild(usersOwnCube)
-								issueDiv.appendChild(boxContainer)
+
+								let inputTitle = document.createElement("h4")
+								inputTitle.innerHTML = "Ange din estimering"
+								inputTitle.style.marginTop = "0px"
+								inputTitle.style.marginBottom = "5px"
+
+								inputContainer.appendChild(inputTitle)
+								inputContainer.appendChild(timeEstimateInput)
+								inputContainer.appendChild(timeEstimateBtn)
+								issueDiv.appendChild(inputContainer)
 	
 								timeEstimateBtn.addEventListener("click", function() {
 	
@@ -215,13 +226,29 @@ function Project(props) {
 							} else {
 	
 								let falseEstimatedTimeCube = document.createElement("div")
-								falseEstimatedTimeCube.style.width = "35px"
-								falseEstimatedTimeCube.style.height = "35px"
-								falseEstimatedTimeCube.style.marginBottom = "10px"
+								falseEstimatedTimeCube.style.width = "45px"
+								falseEstimatedTimeCube.style.height = "45px"
+								falseEstimatedTimeCube.style.marginLeft = "15px"
+								falseEstimatedTimeCube.style.marginRight = "15px"
 								falseEstimatedTimeCube.style.backgroundColor = "red"
 								falseEstimatedTimeCube.innerHTML = "?"
+
+								let tooltip = document.createElement("span")
+								tooltip.innerHTML = username
+								tooltip.classList.add("tooltip")
+								tooltip.style.display = "none"
+
+								falseEstimatedTimeCube.appendChild(tooltip)
 								boxContainer.appendChild(falseEstimatedTimeCube)
 								issueDiv.appendChild(boxContainer)
+
+								falseEstimatedTimeCube.addEventListener("mouseover", () => {
+									tooltip.style.display = "block"
+								})
+		
+								falseEstimatedTimeCube.addEventListener("mouseout", () => {
+									tooltip.style.display = "none"
+								})
 	
 							}
 							
@@ -239,6 +266,14 @@ function Project(props) {
 							trueEstimatedTimeCube.appendChild(tooltip)
 							boxContainer.appendChild(trueEstimatedTimeCube)
 							issueDiv.appendChild(boxContainer)
+
+							trueEstimatedTimeCube.addEventListener("mouseover", () => {
+								tooltip.style.display = "block"
+							})
+	
+							trueEstimatedTimeCube.addEventListener("mouseout", () => {
+								tooltip.style.display = "none"
+							})
 							
 							
 						} else if(Number.isInteger(issue.estimatedTimes[key])) {
@@ -295,19 +330,50 @@ function Project(props) {
 
 				} else {
 					let usernameAssigned = document.createElement("h4")
-					usernameAssigned.classList.add("usernameAssigned")
-					fetch("http://localhost:8080/user/get-user-by-id", {
-						method:"GET",
-						headers: {
-							"id": localStorage.getItem("id"),
-							"sessionID": localStorage.getItem("sessionID")
-						}
+                    usernameAssigned.id = "usernameAssigned";
+                    usernameAssigned.classList.add("usernameAssigned")
+                    fetch("http://localhost:8080/user/get-username-from-id", {
+                        method: "GET",
+                        headers: {
+                            "id": issue.assignedId
+                        }
+                    })
+                    .then(res => res.text())
+                    .then(data => {
+                        usernameAssigned.innerHTML = "issue tilldelat: " + data
+                        issueDiv.appendChild(usernameAssigned)
+					let counterForCompletedTimeValidation = 0;
+                        for(let key in issue.estimatedTimes){ 
+                            if (Number.isInteger(issue.estimatedTimes[key]) && issue.assignedId == localStorage.getItem("id")) {
+                                counterForCompletedTimeValidation++;
+                            }
+							if (counterForCompletedTimeValidation == Object.keys(issue.estimatedTimes).length && issue.completedTime == null) {
+                                usernameAssigned.remove();
+                                let completedTimeInputField = document.createElement("input");
+                                completedTimeInputField.type = "text";
+                                completedTimeInputField.placeholder = "Färdiga tiden här"
+                                let submitCompletedTimeButton = document.createElement("button");
+                                submitCompletedTimeButton.textContent = "Spara färdig tid"
+                                submitCompletedTimeButton.addEventListener("click", () => {
+									fetch("http://localhost:8080/project/issue/close/" + issue.id, {
+                                        method: "PATCH",
+                                        headers: {
+                                            "userId": localStorage.getItem("id"),
+                                            "sessionId": localStorage.getItem("sessionID"),
+                                            "completedTime": completedTimeInputField.value
+                                        }
+                                    })
+									.then(res => res.text())
+                                        .then(data => { //////////////////////FELHANTERING
+                                            loadPage();
+                                        })
+									})
+									issueDiv.appendChild(completedTimeInputField);
+									issueDiv.appendChild(submitCompletedTimeButton)
+								}
+							}
 					})
-					.then(res => res.json())
-					.then(data => {
-						usernameAssigned.innerHTML = "issue tilldelat: " + data.username
-						issueDiv.appendChild(usernameAssigned)
-					})
+						
 				}
 				boxContainer.classList.add("box-container")
 
@@ -343,16 +409,16 @@ function Project(props) {
 			<h4>Medlemmar</h4>
 			<div id='membersDiv'></div>
 			<div id='fieldsDiv'>
-				<input type="text" id='memberUsernameField' placeholder='Lägg till en användare till projektet'/>
-				<button onClick={() => addMemberToProject()}>Lägg till användare</button>
+				<input class="add-userAndIssue-input" type="text" id='memberUsernameField' placeholder='Lägg till en användare till projektet'/>
+				<button class="add-userAndIssue-btn" onClick={() => addMemberToProject()}>Lägg till användare</button>
 				<br />
-				<input type="text" id='newIssueNameField' placeholder='Lägg till ett issue till projektet'/>
-				<button onClick={() => addIssueToProject()}>Lägg till issue</button>
+				<input class="add-userAndIssue-input" type="text" id='newIssueNameField' placeholder='Lägg till ett issue till projektet'/>
+				<button class="add-userAndIssue-btn" onClick={() => addIssueToProject()}>Lägg till issue</button>
 			</div>
 			<br />
 			<h3>Issues</h3>
 			<div id="issue-container"></div>
-			<button onClick={()=>deleteProject()}>Radera projekt</button>
+			<button id='deleteProjectButton' onClick={()=>deleteProject()}>Radera projekt</button>
 		</div>
 	);
 }
