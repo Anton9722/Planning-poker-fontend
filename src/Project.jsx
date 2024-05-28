@@ -11,7 +11,7 @@ function Project(props) {
 	},[])
 
 	const loadPage = () => {
-		fetch("http://localhost:8080/project/" + props.project, {
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/" + props.project, {
 			method: "GET",
 			headers: {
 				"userId": localStorage.getItem("id"),
@@ -20,7 +20,7 @@ function Project(props) {
 		})
 			.then(res => res.text())
 			.then(data => {
-				if (data === "Unauthorized: User authentication failed") { //!!!!!!!anpassa felhantering
+				if (data === "Unauthorized: User authentication failed") {
 					console.log("Unauthorized: User authentication failed");
 					props.setPage("login");
 				} else {
@@ -42,7 +42,7 @@ function Project(props) {
 							const deleteButton = document.createElement("button");
 							deleteButton.textContent = "Ta bort " + data.memberList[i].username;
 							deleteButton.addEventListener("click", () => {
-								fetch("http://localhost:8080/project/removemember", {
+								fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/removemember", {
 									method: "DELETE",
 									headers: {
 										"projectId": props.project,
@@ -53,7 +53,7 @@ function Project(props) {
 								})
 									.then(res => res.text())
 									.then(data => {
-										//!!!!!!!!!!!!felhantering
+				
 										loadPage();
 									})
 							})
@@ -69,7 +69,7 @@ function Project(props) {
 	}
 
 	const deleteProject = () => {
-		fetch("http://localhost:8080/project/delete", {
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/delete", {
 			method: "DELETE",
 			headers: {
 				"projectId": props.project,
@@ -79,13 +79,13 @@ function Project(props) {
 		})
 			.then(res => res.text())
 			.then(data => {
-					//!!!!!!!!!!!!felhantering
+					
 				props.setPage("home")
 			})
 	}
 
 	const addMemberToProject = () => {
-		fetch("http://localhost:8080/project/addmember", {
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/addmember", {
 			method: "PUT",
 			headers: {
 				"projectId": props.project,
@@ -96,13 +96,13 @@ function Project(props) {
 		})
 			.then(res => res.text())
 			.then(data => {
-					//!!!!!!!!!felhantering
+					
 				loadPage();
 			})
 	}
 
 	const addIssueToProject = () => {
-		fetch("http://localhost:8080/project/issue", {
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/issue", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -126,7 +126,7 @@ function Project(props) {
 
 	//------------------------------METOD FÖR ATT HÄMTA OCH RITA UT ISSUES--------------------------------------
 	const fetchData = () => {
-		fetch("http://localhost:8080/project/" + props.project + "/issues", {
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/" + props.project + "/issues", {
 			method:"GET",
 			headers: {
 				"userId": localStorage.getItem("id"),
@@ -143,7 +143,7 @@ function Project(props) {
 		})
 		.then(data => {
 
-			document.getElementById("issue-container").innerHTML = ""; ////////////////////////////////////
+			document.getElementById("issue-container").innerHTML = ""; 
 
 			data.forEach(issue => {
 				
@@ -161,7 +161,7 @@ function Project(props) {
 					
 					//hämta username för att använda för mouseover/mouseout
 					let username = "";
-					fetch("http://localhost:8080/user/get-username-from-id", {
+					fetch("https://octopus-app-wyxkd.ondigitalocean.app/user/get-username-from-id", {
 						method: "GET",
 						headers: {
 							"id": key
@@ -208,7 +208,7 @@ function Project(props) {
 	
 										let timeEstimate = parseInt(timeEstimateInput.value)
 	
-										fetch("http://localhost:8080/project/issue/assign-estimated-time/" + issue.id, {
+										fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/issue/assign-estimated-time/" + issue.id, {
 											method:"PATCH",
 											headers: {
 												"userId": localStorage.getItem("id"),
@@ -217,7 +217,7 @@ function Project(props) {
 											}
 										})
 										.then(res => res.text())
-										.then(data => { //////////////////////FELHANTERING
+										.then(data => { 
 											loadPage();
 										})
 									}
@@ -314,7 +314,7 @@ function Project(props) {
 
 					assignBtn.addEventListener("click", function(){
 						//ändra från assignedIds till assignedId i issueprojects
-						fetch("http://localhost:8080/project/issue/assign-member/" + issue.id, {
+						fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/issue/assign-member/" + issue.id, {
 							method:"PATCH",
 							headers: {
 								"userId": localStorage.getItem("id"),
@@ -322,7 +322,7 @@ function Project(props) {
 							}
 						})
 							.then(res => res.text())
-							.then(data => { //////////////////////FELHANTERING
+							.then(data => { 
 								loadPage();
 							})
 
@@ -332,7 +332,7 @@ function Project(props) {
 					let usernameAssigned = document.createElement("h4")
                     usernameAssigned.id = "usernameAssigned";
                     usernameAssigned.classList.add("usernameAssigned")
-                    fetch("http://localhost:8080/user/get-username-from-id", {
+                    fetch("https://octopus-app-wyxkd.ondigitalocean.app/user/get-username-from-id", {
                         method: "GET",
                         headers: {
                             "id": issue.assignedId
@@ -355,7 +355,7 @@ function Project(props) {
                                 let submitCompletedTimeButton = document.createElement("button");
                                 submitCompletedTimeButton.textContent = "Spara färdig tid"
                                 submitCompletedTimeButton.addEventListener("click", () => {
-									fetch("http://localhost:8080/project/issue/close/" + issue.id, {
+									fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/issue/close/" + issue.id, {
                                         method: "PATCH",
                                         headers: {
                                             "userId": localStorage.getItem("id"),
@@ -364,7 +364,7 @@ function Project(props) {
                                         }
                                     })
 									.then(res => res.text())
-                                        .then(data => { //////////////////////FELHANTERING
+                                        .then(data => { 
                                             loadPage();
                                         })
 									})
