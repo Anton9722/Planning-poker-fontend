@@ -10,7 +10,7 @@ function Login({setPage}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        fetch("http://localhost:8080/user/login", {
+        fetch("https://octopus-app-wyxkd.ondigitalocean.app/user/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -12,7 +12,7 @@ function Register({setPage}) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (input.password == input.passwordConfirm) {
-            fetch("http://localhost:8080/user/create-user", {
+            fetch("https://octopus-app-wyxkd.ondigitalocean.app/user/create-user", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
