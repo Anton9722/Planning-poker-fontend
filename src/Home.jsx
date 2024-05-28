@@ -6,7 +6,7 @@ function Home(props) {
 	const [newProjectName, setNewProjectName] = useState("");
 
 	useEffect(() => {
-		fetch("http://localhost:8080/user/get-projectList", { 
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/user/get-projectList", { 
 			method: "GET",
 			headers: {
 				"id": localStorage.getItem("id"),
@@ -52,7 +52,7 @@ function Home(props) {
 		console.log(document.getElementById("newProjectInputField").value);
 
 
-		fetch("http://localhost:8080/project/create", { 
+		fetch("https://octopus-app-wyxkd.ondigitalocean.app/project/create", { 
 			method: "POST",
 			headers: {
 				"userId": localStorage.getItem("id"),
