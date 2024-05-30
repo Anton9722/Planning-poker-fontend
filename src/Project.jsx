@@ -48,7 +48,8 @@ function Project(props) {
 										"projectId": props.project,
 										"userId": localStorage.getItem("id"),
 										"sessionId": localStorage.getItem("sessionID"),
-										"usernameToRemove": data.memberList[i].username
+										"usernameToRemove": data.memberList[i].username,
+										"userIdToRemove": data.memberList[i].userId
 									}
 								})
 									.then(res => res.text())
